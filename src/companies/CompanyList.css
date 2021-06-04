@@ -1,0 +1,13 @@
+.company-list {
+	margin: auto;
+	width: 70vw;
+}
+
+.company-card {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.company-card-title {
+	font-weight: bold;
+}

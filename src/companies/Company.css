@@ -1,0 +1,15 @@
+.job-list {
+	margin: auto;
+	width: 70vw;
+}
+
+.company-heading {
+	margin: auto;
+	margin-top: 30px;
+	width: 70vw;
+	text-align: left;
+}
+
+.apply-button {
+	display: inline-block;
+}
