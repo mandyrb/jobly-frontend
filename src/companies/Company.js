@@ -6,7 +6,7 @@ import JoblyApi from "../api";
 import {ListGroup} from "reactstrap";
 import JobCard from "../jobs/JobCard";
 
-function Company(){
+function Company({apply}){
     const { handle } = useParams();
     const [company, setCompany] = useState(null);
 
@@ -28,7 +28,7 @@ function Company(){
             </div>
             <ListGroup className = "job-list">
                 {company.jobs.map(job => (
-                    <JobCard job={job}></JobCard>
+                    <JobCard apply={apply} job={job} key={job.id}></JobCard>
                 ))}
             </ListGroup>
         </div>

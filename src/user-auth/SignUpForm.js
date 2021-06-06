@@ -20,14 +20,14 @@ function SignUpForm({signupUser}){
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(Object.values(formData).includes("")) {
-            setInvalidMessage(true);
+            setInvalidMessage("All fields are required");
             return;
         }
-        let userExists = await signupUser(formData.username, formData.password, formData.firstName, formData.lastName, formData.email);
-        if (userExists){
+        let newUser = await signupUser(formData.username, formData.password, formData.firstName, formData.lastName, formData.email);
+        if (newUser === true){
             history.push('/');
         }
-        else setInvalidMessage(true)
+        else setInvalidMessage(newUser[0]);
     }
 
     return(
@@ -65,7 +65,7 @@ function SignUpForm({signupUser}){
                 <Button color="primary">Submit</Button>
                 </FormGroup>
                 <br></br>
-                {invalidMessage && <h6>All fields are required</h6>}
+                {invalidMessage && <h6>{invalidMessage}</h6>}
                 <br></br>
                 <br></br>
                 </Col>

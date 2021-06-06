@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {BrowserRouter} from "react-router-dom";
 import Routes from "./routes-nav/Routes";
 import NavBar from "./routes-nav/NavBar";
 import JoblyApi from "./api";
@@ -16,12 +17,10 @@ function App() {
       localStorage.setItem("token", token);
       setToken(token);
       JoblyApi.token = token;
-      let user = await JoblyApi.getUser(username);
-      setUser(user);
       return true;
     }
-    catch{
-      return false;
+    catch(e){
+      return e;
     }
   }
 
@@ -31,12 +30,10 @@ function App() {
       localStorage.setItem("token", token);
       setToken(token);
       JoblyApi.token = token;
-      let user = await JoblyApi.getUser(username);
-      setUser(user);
       return true;
     }
-    catch{
-      return false;
+    catch(e){
+      return e;
     }
   }
 
@@ -44,11 +41,10 @@ function App() {
     try{
       await JoblyApi.login(username, password);
     }
-    catch {
-      return false
+    catch (e) {
+      return e;
     }
-    await JoblyApi.profileUpdate(username, firstName, lastName, email);
-    let user = await JoblyApi.getUser(username);
+    let user = await JoblyApi.profileUpdate(username, firstName, lastName, email);
     setUser(user);
     return true;
   }
@@ -57,6 +53,13 @@ function App() {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
+  }
+
+  async function applyToJob(username, jobId){
+    let result = await JoblyApi.apply(username, jobId);
+    let user = await JoblyApi.getUser(username);
+    setUser(user);
+    return result;
   }
 
   async function getUserDetails(token){
@@ -71,14 +74,16 @@ function App() {
     if(tokenFromLocalStorage){
       getUserDetails(tokenFromLocalStorage);
     }
-  });
+  },[token]);
 
   return (
     <div className="App">
+      <BrowserRouter>
       <UserContext.Provider value={user}>
       <NavBar logoutUser={logoutUser}/>
-      <Routes user={user} updateProfile={updateProfile} signupUser = {signupUser} loginUser={loginUser}/>
+      <Routes user={user} updateProfile={updateProfile} signupUser = {signupUser} loginUser={loginUser} apply={applyToJob}/>
       </UserContext.Provider>
+      </BrowserRouter>
     </div>
   );
 }

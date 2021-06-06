@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext} from "react";
 import {Container, Form, FormGroup, Row, Col, Label, Input, Button} from "reactstrap";
 import { useHistory } from 'react-router-dom';
 import UserContext from "../UserContext";
@@ -7,20 +7,9 @@ import "./ProfileForm.css";
 
 function ProfileForm({updateProfile}){
     let user = useContext(UserContext);
-    const initial_state = {firstName: "", lastName:"", email:"", password:""}
-    const [formData, setFormData] = useState(initial_state);
-    // const [formData, setFormData] = useState({firstName: user.firstName, lastName:user.lastName, email:user.email, password:""});
-
+    const [formData, setFormData] = useState({firstName: user.firstName, lastName:user.lastName, email:user.email, password:""});
     const [invalidMessage, setInvalidMessage] = useState(false); 
     const history = useHistory(); 
-
-    // setTimeout(function(){
-    //     setFormData({firstName: user.firstName, lastName:user.lastName, email:user.email, password:""});
-    // }, 3000);
-
-    // useEffect(() => {
-    //     setFormData({firstName: user.firstName, lastName:user.lastName, email:user.email, password:""});
-    // }, [user]);
     
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,26 +17,24 @@ function ProfileForm({updateProfile}){
             ...formData, 
             [name]: value
         }))
-        console.log(formData);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(Object.values(formData).includes("")) {
-            setInvalidMessage(true);
+            setInvalidMessage("All fields are required");
             return;
         }
-        let passwordValid = await updateProfile(user.username, formData.password, formData.firstName, formData.lastName, formData.email);
-        if (passwordValid){
+        let updatedUser = await updateProfile(user.username, formData.password, formData.firstName, formData.lastName, formData.email);
+        if (updatedUser === true){
             history.push('/');
         }
-        else setInvalidMessage(true)
+        else setInvalidMessage("Incorrect password");
     }
 
     if (!user) {
         return <LoadingSpinner />
     }
-    // setFormData({firstName: user.firstName, lastName:user.lastName, email:user.email, password:""});
 
     return(
         <Container>
@@ -84,7 +71,7 @@ function ProfileForm({updateProfile}){
                 <Button color="primary">Submit</Button>
                 </FormGroup>
                 <br></br>
-                {invalidMessage && <h6>All fields are required</h6>}
+                {invalidMessage && <h6>{invalidMessage}</h6>}
                 <br></br>
                 <br></br>
                 </Col>

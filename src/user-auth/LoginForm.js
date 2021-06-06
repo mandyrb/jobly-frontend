@@ -19,11 +19,12 @@ function LoginForm({loginUser}){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let userExists = await loginUser(formData.username, formData.password);
-        if (userExists){
+        let login = await loginUser(formData.username, formData.password);
+        if (login === true){
             history.push('/');
         }
-        else setInvalidMessage(true)
+        
+        else setInvalidMessage(login[0]);
     }
 
     return(
@@ -46,7 +47,7 @@ function LoginForm({loginUser}){
                 <Button color="primary">Submit</Button>
                 </FormGroup>
                 <br></br>
-                {invalidMessage && <h6>Invalid username or password</h6>}
+                {invalidMessage && <h6>{invalidMessage}</h6>}
                 </Col>
             </Row>
         </Form>

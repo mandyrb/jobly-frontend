@@ -1,4 +1,4 @@
-import {Route, BrowserRouter, Redirect, Switch} from "react-router-dom";
+import {Route, Redirect, Switch} from "react-router-dom";
 import Home from "../Home";
 import LoginForm from "../user-auth/LoginForm";
 import SignUpForm from "../user-auth/SignUpForm";
@@ -8,12 +8,12 @@ import Company from "../companies/Company";
 import JobList from "../jobs/JobList";
 import React from "react";
 
-function Routes({loginUser, signupUser, updateProfile}){
+function Routes({loginUser, signupUser, updateProfile, apply}){
 
     const tokenFromLocalStorage = localStorage.getItem("token");
 
     return(
-        <BrowserRouter>
+
         <Switch>
             <Route exact path="/" >
                 <Home/>
@@ -33,14 +33,14 @@ function Routes({loginUser, signupUser, updateProfile}){
             </Route>
             <Route exact path="/companies/:handle" >
                 {tokenFromLocalStorage ? 
-                    <Company/>
+                    <Company apply={apply}/>
                     :
                     <Redirect to="/" />
                 }
             </Route>
             <Route exact path="/jobs" >
                 {tokenFromLocalStorage ? 
-                    <JobList/> 
+                    <JobList apply={apply}/> 
                     :
                     <Redirect to="/" />
                 }
@@ -54,7 +54,6 @@ function Routes({loginUser, signupUser, updateProfile}){
             </Route>
             <Redirect to="/" />
         </Switch>
-      </BrowserRouter>
     )
 }
 

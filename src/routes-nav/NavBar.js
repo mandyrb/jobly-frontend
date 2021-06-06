@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
-import { NavbarBrand, Navbar, Nav, NavItem, NavLink} from 'reactstrap';
+import { NavLink } from "react-router-dom";
+import { NavbarBrand, Navbar, Nav, NavItem} from 'reactstrap';
 import UserContext from "../UserContext";
 
 function NavBar({logoutUser}){
@@ -12,25 +13,25 @@ function NavBar({logoutUser}){
           {user ? 
             <>
               <NavItem>
-                <NavLink href="/companies">Companies</NavLink>
+                <NavLink className="nav-link" to="/companies">Companies</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/jobs">Jobs</NavLink>
+                <NavLink className="nav-link" to="/jobs">Jobs</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/profile">Profile</NavLink>
+                <NavLink className="nav-link" to="/profile">Profile</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={logoutUser} href="/">Logout {user.username}</NavLink>
+                <NavLink className="nav-link" to="/" onClick={logoutUser}>Logout {user.username}</NavLink>
               </NavItem>
             </>
             :
             <>
               <NavItem>
-                <NavLink href="/login">Login</NavLink>
+                <NavLink className="nav-link" to="/login">Login</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/signup">Sign Up</NavLink>
+                <NavLink className="nav-link" to="/signup">Sign Up</NavLink>
               </NavItem>
             </>
           }

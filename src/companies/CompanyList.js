@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from "react";
 import JoblyApi from "../api";
-import {Card, CardBody, CardTitle, CardText, ListGroup, Button} from "reactstrap";
+import {Card, CardBody, CardTitle, CardText, ListGroup, Button, Form} from "reactstrap";
 import CompanySearchForm from "./CompanySearchForm";
 import LoadingSpinner from "../LoadingSpinner";
+import { useHistory } from 'react-router-dom';
 import "./CompanyList.css";
 
 function CompanyList(){
 
     const [companies, setCompanies] = useState(null);
+    const history = useHistory(); 
 
     async function getCompaniesList() {
         let result = await JoblyApi.getCompanies();
@@ -24,6 +26,10 @@ function CompanyList(){
         return result.length;
     }
 
+    const handleSubmit = async (handle) => {
+        history.push(`/companies/${handle}`);
+    }
+
     if (!companies) return <LoadingSpinner />
 
     return(
@@ -35,7 +41,9 @@ function CompanyList(){
                     <CardBody>
                         <CardTitle className="company-card-title">{company.name}</CardTitle>
                         <CardText>{company.description}</CardText>
-                        <Button href={`/companies/${company.handle}`}>Learn More</Button>
+                        <Form onSubmit={() => handleSubmit(company.handle)}>
+                            <Button >Learn More</Button>
+                        </Form>
                     </CardBody>
                 </Card>
 

@@ -6,7 +6,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import JobCard from "./JobCard";
 import "./JobList.css";
 
-function JobList(){
+function JobList({apply}){
     const [jobs, setJobs] = useState(null);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ function JobList(){
                 <JobSearchForm search={getJobsWithSearch}/>
                 <ListGroup className = "job-list">
                     {jobs.map(job => (
-                        <JobCard key={job.id} job={job}></JobCard>
+                        <JobCard apply={apply} key={job.id} job={job}></JobCard>
                     ))}
                 </ListGroup>
             </div>
